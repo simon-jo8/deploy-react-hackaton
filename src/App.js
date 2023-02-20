@@ -1,17 +1,23 @@
-import { Navigate, Route, Routes } from "react-router-dom";
-import LoginPage from ".//pages/LoginPage";
-import HomePage from ".//pages/HomePage";
-import RegisterPage from ".//pages/RegisterPage";
+import React from "react";
+import logo from "./logo.svg";
+import "./App.css";
 
 function App() {
-  const isLoggedIn = false;
-  
+  const [data, setData] = React.useState(null);
+
+  React.useEffect(() => {
+    fetch("/api")
+      .then((res) => res.json())
+      .then((data) => setData(data.message));
+  }, []);
+
   return (
-    <Routes>
-      <Route path="/login" component={LoginPage} />
-      <Route path="/register" component={RegisterPage} />
-      <Route path="/" element={isLoggedIn ? <HomePage /> : <Navigate to="/register" />} />
-    </Routes>
+    <div className="App">
+      <header className="App-header">
+        <img src={logo} className="App-logo" alt="logo" />
+        <p>{!data ? "Loading..." : data}</p>
+      </header>
+    </div>
   );
 }
 
