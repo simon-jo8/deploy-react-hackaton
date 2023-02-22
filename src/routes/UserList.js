@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
-import './UserList.css';
+import '../Home/UserList.css';
 
 const socket = io('http://localhost:4000');
 
@@ -44,7 +44,7 @@ function UserList() {
 
     socket.on('room created', (room) => {
       // Redirect to the new room using the window.location object
-      window.location = `/rooms/${room}`;
+      window.location = `/game/${room}`;
     });
 
     socket.on('challenged', (opponent) => {

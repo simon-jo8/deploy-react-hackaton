@@ -1,4 +1,3 @@
-import App from "../../../src/App";
 import React, { useState } from 'react';
 import {QuizzData} from "./QuizzData";
 import "./game.css";
