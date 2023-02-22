@@ -15,7 +15,7 @@ const router = createBrowserRouter([
         element: <App/>,
     },
     {
-        path: "game/:roomId",
+        path: "game/:roomId/:playerId",
         element: <MainQuizz />,
     },
 ]);

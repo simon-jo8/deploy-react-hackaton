@@ -17,9 +17,11 @@ app.get("/api", (req, res) => {
 
 let connectedUsers = [];
 let activeRooms = [];
+let users = [];
 
 socketIO.on('connection', (socket) => {
-    // console.log(`⚡: ${socket.id} user just connected!`);
+    console.log(`⚡: ${socket.id} user just connected!`);
+    users.push({socket:socket,id:socket.id});
     
     // Add the new user to the connected users list
     connectedUsers.push({ id: socket.id, name: "User " + socket.id });
@@ -45,25 +47,32 @@ socketIO.on('connection', (socket) => {
 
     })
 
+    socket.on('spell', (roomId, spell, spellAnimation, currentUser) => {
+        // Send a message to the challenged user
+        socketIO.to(roomId).emit('spell', spell, spellAnimation, currentUser);
+    });
+
+    socket.on('join',(room) => {
+      socket.join(room);
+    })
 
     socket.on('challenge user', (opponentId) => {
         console.log(`User ${socket.id} challenged user ${opponentId}`);
 
+        let user_index = users.findIndex(user => user.id == opponentId);
+        let socketB = users[user_index].socket;
         // Create a new room with the two players
-        const roomId = `${socket.id}-${opponentId}`;
+        const roomId = `${socket.id}${opponentId}`;
+        console.log(roomId);
         activeRooms.push(roomId);
 
         // Send each player to the room
         socket.join(roomId);
-        // socket.to(roomId).emit('join room', roomId);
-        socket.to(opponentId).emit('join room', roomId);
+        socketB.join(roomId);
 
         // Send a message to both players indicating the room they are in
-        socket.emit('room created', roomId);
-        socket.to(opponentId).emit('room created', roomId);
-
-
-
+        // socket.emit('room created', roomId);
+        socketIO.to(roomId).emit('room created',roomId);
 
         // socket.to(opponentId).emit('room created', roomId);
     });

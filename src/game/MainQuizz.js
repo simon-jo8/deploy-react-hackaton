@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {QuizzData} from "./QuizzData";
 import "./game.css";
 import user1 from "../assets/perso_1.gif";
@@ -12,12 +12,22 @@ import transfigurate from "../assets/transfo.gif";
 import hit from "../assets/hit_1.gif";
 import background from "../assets/background.webp";
 import HealthBar from "./HealthBar";
+import {SocketContext} from '../context/socket';
 
-function MainQuizz() {
 
+
+function MainQuizz(props) {
+    const socket = useContext(SocketContext);
+    const currentUser = props.currentUser;
+    const opponent = props.opponent;
+    const roomId = props.roomId;
     const questions = QuizzData;
     const listSpellAnimation = [spellAttack,spellDefense,spellTransfigurate];
     const [showFinalScore, setShowFinalScore] = useState(false);
+    const [readyUser, setReadyUser] = useState(false);
+    const [readyBot, setReadyBot] = useState(false);
+    const listSpell = ["attack","defense","transfigurate"];
+
 
     const [UserHP, setUserHP] = useState(8);
     const [BotHP, setBotHP] = useState(8);
@@ -25,14 +35,11 @@ function MainQuizz() {
     const [userSpell, setUserSpell] = useState(false);
     const [botSpell, setBotSpell] = useState(false);
 
-    const [userSpellAnimation, setUserSpellAnimation] = useState(listSpellAnimation[0]);
-    const [botSpellAnimation, setBotSpellAnimation] = useState(listSpellAnimation[0]);
+    const [userSpellAnimation, setUserSpellAnimation] = useState(null);
+    const [botSpellAnimation, setBotSpellAnimation,getbotSpellAnimation] = useState(null);
 
-    const [nextUserSpell, setNextUserSpell] = useState(listSpellAnimation[0]);
-    const [nextBotSpell, setNextBotSpell] = useState(listSpellAnimation[0]);
-
-
-    const listSpell = ["attack","defense","transfigurate"];
+    const [nextUserSpell, setNextUserSpell] = useState(null);
+    const [nextBotSpell, setNextBotSpell, getNextBotSpell] = useState(null);
 
     const [duel, setDuel] = useState(true);
 
@@ -40,6 +47,27 @@ function MainQuizz() {
 
     const [showScore, setShowScore] = useState(false);
     const [score, setScore] = useState(0);
+
+
+    socket.on('spell',(spellOpponent,spellAnimationOpponent,currentUserId) =>{
+        if(currentUserId === currentUser){
+        }else{
+            console.log(spellOpponent,spellAnimationOpponent,currentUserId);
+            if(readyUser){
+                setReadyBot(true)
+                setNextBotSpell(spellOpponent);
+                setBotSpellAnimation(spellAnimationOpponent);
+                handleDuel(spellOpponent,spellAnimationOpponent);
+            }
+            else{
+                console.log("ready bot")
+                setReadyBot(true)
+                setNextBotSpell(spellOpponent)
+                setBotSpellAnimation(spellAnimationOpponent)
+            }
+        }
+    });
+
 
     const handleDeadUser = () => {
         setShowFinalScore(true)
@@ -53,7 +81,11 @@ function MainQuizz() {
     const handleAnswerOptionClick = (index) => {
         if (index === questions[currentQuestion].goodAnswer) {
             setScore(score + 1);
-            handleDuel()
+            setReadyUser(true)
+            socket.emit('spell', roomId, nextUserSpell,userSpellAnimation, currentUser);
+            if (readyBot) {
+                handleDuel();
+            }
         }
 
         const nextQuestion = currentQuestion + 1;
@@ -64,15 +96,18 @@ function MainQuizz() {
             setShowScore(true);
         }
     };
-    const handleDuel = () => {
+    const handleDuel = (spellOponnent) => {
+
+        let _nextBotSpell = nextBotSpell === null ? spellOponnent : nextBotSpell ;
+        console.log(nextUserSpell, _nextBotSpell)
+
         setUserSpell(true)
         setBotSpell(true)
-        console.log(nextUserSpell, nextBotSpell)
-        if (nextUserSpell === nextBotSpell) {
-        }else if(nextUserSpell=== "attack" && nextBotSpell === "transfigurate" || nextUserSpell === "defense" && nextBotSpell === "attack" || nextUserSpell === "transfigurate" && nextBotSpell === "defense") {
+
+        if (nextUserSpell === _nextBotSpell) {
+        }else if(nextUserSpell=== "attack" && _nextBotSpell === "transfigurate" || nextUserSpell === "defense" && _nextBotSpell === "attack" || nextUserSpell === "transfigurate" && _nextBotSpell === "defense") {
             setTimeout(() => {
                 setBotSpellAnimation(hit)
-
             },1500);
             setBotHP(BotHP - 2);
             setTimeout(() => {
@@ -81,7 +116,7 @@ function MainQuizz() {
                 }
             },3000);
 
-        }else if(nextUserSpell === "attack" && nextBotSpell === "defense" || nextUserSpell === "defense" && nextBotSpell === "transfigurate" || nextUserSpell === "transfigurate" && nextBotSpell === "attack") {
+        }else if(nextUserSpell === "attack" && _nextBotSpell === "defense" || nextUserSpell === "defense" && _nextBotSpell === "transfigurate" || nextUserSpell === "transfigurate" && _nextBotSpell === "attack") {
             setTimeout(() => {
                 setUserSpellAnimation(hit)
             },1500);
@@ -97,9 +132,10 @@ function MainQuizz() {
             setUserSpell(false)
             setBotSpell(false)
         },3000)
+        setReadyUser(false)
+        setReadyBot(false)
     }
     const saveDuel = (spell) => {
-        const spellBot = listSpell[Math.floor(Math.random() * listSpell.length)];
         switch (spell) {
             case "attack":
                 setUserSpellAnimation(listSpellAnimation[0])
@@ -112,20 +148,6 @@ function MainQuizz() {
             case "transfigurate":
                 setUserSpellAnimation(listSpellAnimation[2])
                 setNextUserSpell(listSpell[2])
-                break;
-        }
-        switch (spellBot) {
-            case "attack":
-                setBotSpellAnimation(listSpellAnimation[0])
-                setNextBotSpell(listSpell[0])
-                break;
-            case "defence":
-                setBotSpellAnimation(listSpellAnimation[1])
-                setNextBotSpell(listSpell[1])
-                break;
-            case "transfigurate":
-                setBotSpellAnimation(listSpellAnimation[2])
-                setNextBotSpell(listSpell[2])
                 break;
         }
         setDuel(false)
