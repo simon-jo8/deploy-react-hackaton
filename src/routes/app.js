@@ -9,7 +9,7 @@ import {SocketContext, socket} from '../context/socket';
 export default function App(){
     return(
         <SocketContext.Provider value={socket}>
-            <div className='app mt-5'>
+            <div className='app'>
                 <UserList/>
             </div>
         </SocketContext.Provider>

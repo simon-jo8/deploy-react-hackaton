@@ -71,6 +71,7 @@ function UserList() {
               <div className="current-user">
                 <h3>Current User</h3>
                 <p>{currentUser.name}</p>
+                <p>House</p>
               </div>
               <div className="other-users">
                 <h3>Other Users</h3>

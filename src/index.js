@@ -2,6 +2,7 @@ import React from 'react';
 import ReactDOM from "react-dom/client";
 import App from "./routes/App";
 import './App.css';
+import './assets/WizardWorld.ttf'
 
 import {
     createBrowserRouter,
