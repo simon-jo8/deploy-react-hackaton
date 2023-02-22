@@ -12,13 +12,14 @@ body{
 
 }
 
-.App{
+.app{
     height: 100vh;
     width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
     justify-content: center;
+    background: #EEC494;
 }
 .QuizzApp{
     width: 100%;
@@ -27,14 +28,18 @@ body{
 
 .QuizzApp h1{
     text-align: center;
+    font-family: Wizzard;
+    font-weight: 600;
     margin-top: 20px;
+    margin-bottom: 40px;
+    color: #503A22;
 }
 
 .mainFrame{
     width: 100%;
-    height: 100%;
-    background-color: #ffffff;
     display: flex;
+    background: #EEC494;
+
 }
 
 .userCol{
@@ -44,12 +49,16 @@ body{
     justify-content: flex-end;
     padding-bottom: 40px;
     width: 20%;
-    height: 90%;
+    height: 85vh;
 }
 .user{
     display: flex;
     flex-direction: column;
     align-items: center;
+}
+
+.user p{
+    font-family: Wizzard;
 }
 
 .user img {
@@ -151,12 +160,19 @@ body{
 }
 
 .duel-button button {
-    width: 30%;
+    width: 200px;
+    height: 200px;
     border: none;
     display: flex;
+    background: url("../assets/cadre.svg") no-repeat top left;
     flex-direction: column;
+    font-family: Wizzard;
+    color: #eeeeee;
     align-items: center;
     justify-content: center;
+}
+.duel-button button:hover {
+    opacity: 0.8;
 }
 .duel-button button img {
     width: 100px;
@@ -171,6 +187,11 @@ body{
     align-items: center;
     justify-content: center;
 }
+.question-section h2{
+    font-family: Wizzard;
+    color: #503A22;
+
+}
 
 .answer-section{
     display: flex;
@@ -180,18 +201,25 @@ body{
 }
 
 .answer-section button{
-    width: 400px;
+    width: 300px;
+    height: 70px;
     margin-bottom: 20px;
     padding: 20px;
     border: none;
-    border: 1px solid #F9E8BC;
-    background: #F9E8BC;
+    font-family: Wizzard;
+    letter-spacing: 2px;
+    font-weight: 400;
+    color: white;
+    /*text-transform: uppercase;*/
+    background:url('../assets/button.svg') no-repeat top left;
+    background-size: 100%;
     transition: 300ms;
+    position: relative;
 }
+
+
 
 .answer-section button:hover{
     cursor: pointer;
-    border: 1px solid black;
-    background: #FFFFFF;
-    color: black;
+    opacity: 0.8;
 }

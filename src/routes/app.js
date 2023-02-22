@@ -2,7 +2,10 @@ import React, { useState, useEffect } from 'react';
 import '../App.css';
 import MainQuizz from "../game/MainQuizz";
 import UserList from "./UserList";
+
 import Login from './Login';
+import {SocketContext, socket} from '../context/socket';
+
 
 export default function App(){
 
@@ -28,5 +31,6 @@ export default function App(){
                 <Login />
             )}
         </div>
+
     )
 }

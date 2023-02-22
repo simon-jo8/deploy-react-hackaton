@@ -1,6 +1,7 @@
-import React, { useState } from 'react';
+import React, {useEffect, useState,useContext} from 'react';
 import {QuizzData} from "./QuizzData";
 import "./game.css";
+import '../index.css';
 import user1 from "../assets/perso_1.gif";
 import user2 from "../assets/perso_2.gif";
 import attack from "../assets/attack.gif";
@@ -12,27 +13,32 @@ import transfigurate from "../assets/transfo.gif";
 import hit from "../assets/hit_1.gif";
 import background from "../assets/background.webp";
 import HealthBar from "./HealthBar";
+import {SocketContext} from '../context/socket';
 
-function MainQuizz() {
 
+
+function MainQuizz(props) {
+    const socket = useContext(SocketContext);
+    const currentUser = props.currentUser;
+    const opponent = props.opponent;
+    const roomId = props.roomId;
     const questions = QuizzData;
+
+    const [_currentUser,_setCurrentUser] = useState({id:currentUser, hp:8, spell:null, spellAnimation:null,ready:false,hit:false});
+    const [_opponent,_setOpponent] = useState({id:opponent, hp:8, spell:null, spellAnimation:null,ready:false,hit:false});
+
+
+
     const listSpellAnimation = [spellAttack,spellDefense,spellTransfigurate];
     const [showFinalScore, setShowFinalScore] = useState(false);
-
-    const [UserHP, setUserHP] = useState(8);
-    const [BotHP, setBotHP] = useState(8);
+    const listSpell = ["attack","defence","transfigurate"];
 
     const [userSpell, setUserSpell] = useState(false);
     const [botSpell, setBotSpell] = useState(false);
 
-    const [userSpellAnimation, setUserSpellAnimation] = useState(listSpellAnimation[0]);
-    const [botSpellAnimation, setBotSpellAnimation] = useState(listSpellAnimation[0]);
+    const [userSpellAnimation, setUserSpellAnimation] = useState(null);
+    const [botSpellAnimation, setBotSpellAnimation,getbotSpellAnimation] = useState(null);
 
-    const [nextUserSpell, setNextUserSpell] = useState(listSpellAnimation[0]);
-    const [nextBotSpell, setNextBotSpell] = useState(listSpellAnimation[0]);
-
-
-    const listSpell = ["attack","defense","transfigurate"];
 
     const [duel, setDuel] = useState(true);
 
@@ -40,6 +46,9 @@ function MainQuizz() {
 
     const [showScore, setShowScore] = useState(false);
     const [score, setScore] = useState(0);
+
+
+
 
     const handleDeadUser = () => {
         setShowFinalScore(true)
@@ -51,10 +60,11 @@ function MainQuizz() {
 
 
     const handleAnswerOptionClick = (index) => {
-        if (index === questions[currentQuestion].goodAnswer) {
-            setScore(score + 1);
-            handleDuel()
-        }
+        // if (index === questions[currentQuestion].goodAnswer) {
+        //     socket.emit('playerReady', _currentUser, roomId);
+        // }
+
+        socket.emit('playerReady', _currentUser, roomId);
 
         const nextQuestion = currentQuestion + 1;
         if (nextQuestion < 8) {
@@ -64,72 +74,82 @@ function MainQuizz() {
             setShowScore(true);
         }
     };
-    const handleDuel = () => {
-        setUserSpell(true)
-        setBotSpell(true)
-        console.log(nextUserSpell, nextBotSpell)
-        if (nextUserSpell === nextBotSpell) {
-        }else if(nextUserSpell=== "attack" && nextBotSpell === "transfigurate" || nextUserSpell === "defense" && nextBotSpell === "attack" || nextUserSpell === "transfigurate" && nextBotSpell === "defense") {
-            setTimeout(() => {
-                setBotSpellAnimation(hit)
-
-            },1500);
-            setBotHP(BotHP - 2);
-            setTimeout(() => {
-                if (UserHP - 2 === 0) {
-                    handleDeadBot()
-                }
-            },3000);
-
-        }else if(nextUserSpell === "attack" && nextBotSpell === "defense" || nextUserSpell === "defense" && nextBotSpell === "transfigurate" || nextUserSpell === "transfigurate" && nextBotSpell === "attack") {
-            setTimeout(() => {
-                setUserSpellAnimation(hit)
-            },1500);
-            setUserHP(UserHP - 2);
-            setTimeout(() => {
-                if (UserHP - 2 === 0) {
-                    handleDeadUser()
-                }
-            },3000);
-
-        }
-        setTimeout(() => {
-            setUserSpell(false)
-            setBotSpell(false)
-        },3000)
-    }
     const saveDuel = (spell) => {
-        const spellBot = listSpell[Math.floor(Math.random() * listSpell.length)];
         switch (spell) {
             case "attack":
-                setUserSpellAnimation(listSpellAnimation[0])
-                setNextUserSpell(listSpell[0])
+                _setCurrentUser({..._currentUser, spell:listSpell[0], spellAnimation:listSpellAnimation[0],ready: true});
                 break;
             case "defence":
-                setUserSpellAnimation(listSpellAnimation[1])
-                setNextUserSpell(listSpell[1])
+                _setCurrentUser({..._currentUser, spell:listSpell[1], spellAnimation:listSpellAnimation[1],ready: true});
                 break;
             case "transfigurate":
-                setUserSpellAnimation(listSpellAnimation[2])
-                setNextUserSpell(listSpell[2])
-                break;
-        }
-        switch (spellBot) {
-            case "attack":
-                setBotSpellAnimation(listSpellAnimation[0])
-                setNextBotSpell(listSpell[0])
-                break;
-            case "defence":
-                setBotSpellAnimation(listSpellAnimation[1])
-                setNextBotSpell(listSpell[1])
-                break;
-            case "transfigurate":
-                setBotSpellAnimation(listSpellAnimation[2])
-                setNextBotSpell(listSpell[2])
+                _setCurrentUser({..._currentUser, spell:listSpell[2], spellAnimation:listSpellAnimation[2],ready: true});
                 break;
         }
         setDuel(false)
     }
+
+    socket.on('gameStart', (player1, player2) => {
+        if(player1.id === currentUser){
+            _setCurrentUser(player1);
+            _setOpponent(player2);
+            setUserSpellAnimation(player1.spellAnimation);
+            setBotSpellAnimation(player2.spellAnimation);
+            setUserSpell(true);
+            setBotSpell(true);
+            if (player1.hit) {
+                setTimeout(() => {
+                  setUserSpellAnimation(hit)
+                },1350)
+            }
+            if (player2.hit) {
+                setTimeout(() => {
+                  setBotSpellAnimation(hit)
+                },1350)
+            }
+            setTimeout(() => {
+                setUserSpell(false);
+                setBotSpell(false);
+                setUserSpellAnimation(null);
+                setBotSpellAnimation(null);
+            },2700);
+            if (player1.hp === 0) {
+                handleDeadUser();
+            }else if (player2.hp === 0) {
+                handleDeadBot();
+            }
+        }else{
+            _setCurrentUser(player2);
+            _setOpponent(player1);
+            setUserSpellAnimation(player2.spellAnimation);
+            setBotSpellAnimation(player1.spellAnimation);
+            setUserSpell(true);
+            setBotSpell(true);
+            if (player1.hp === 0) {
+                handleDeadUser();
+            }else if (player2.hp === 0) {
+                handleDeadBot();
+            }
+            if (player2.hit) {
+                setTimeout(() => {
+                    setUserSpellAnimation(hit)
+                },1350)
+            }
+            if (player1.hit) {
+                setTimeout(() => {
+                    setBotSpellAnimation(hit)
+                },1350)
+            }
+            setTimeout(() => {
+                setUserSpell(false);
+                setBotSpell(false);
+                setUserSpellAnimation(null);
+                setBotSpellAnimation(null);
+            },2700);
+
+        }
+    })
+
 
     return (
         <div className="QuizzApp">
@@ -145,7 +165,8 @@ function MainQuizz() {
                     <div className="leftUser userCol">
                         <div className="user">
                             <img src={user1} alt=""/>
-                            <HealthBar hp={UserHP} maxHp={8}/>
+                            <HealthBar hp={_currentUser.hp} maxHp={8}/>
+                            <p>Player 1</p>
                         </div>
                     </div>
                     <div className="mainGame">
@@ -182,7 +203,7 @@ function MainQuizz() {
                                             <div>
                                                 <div className='question-section'>
                                                     <div className='question-count'>
-                                                        <span>Question {currentQuestion + 1}</span>/10
+                                                        <span className="question">Question {currentQuestion + 1}</span>/10
                                                     </div>
                                                     <h2 className='question-text'>{questions[currentQuestion].question}</h2>
                                                 </div>
@@ -203,16 +224,14 @@ function MainQuizz() {
                     <div className="rightUser userCol">
                         <div className="user">
                             <img src={user2} alt=""/>
-                            <HealthBar hp={BotHP} maxHp={8}/>
+                            <HealthBar hp={_opponent.hp} maxHp={8}/>
+                            <p>Player 2</p>
                         </div>
                     </div>
 
                 </div>
                 )
             }
-
-
-
         </div>
     );
 
