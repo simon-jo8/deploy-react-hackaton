@@ -1,6 +1,7 @@
 import React from 'react';
 import ReactDOM from "react-dom/client";
 import App from "./routes/App";
+import Login from './routes/Login';
 import './App.css';
 
 import {
@@ -13,6 +14,10 @@ const router = createBrowserRouter([
     {
         path: "/",
         element: <App/>,
+    },
+    {
+        path: "/login",
+        element: <Login/>,
     },
     {
         path: "game/:roomId",
