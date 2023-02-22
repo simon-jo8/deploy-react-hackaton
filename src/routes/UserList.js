@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import { io } from 'socket.io-client';
 import '../Home/UserList.css';
+import APIcall from '../API/api.js';
 
 const socket = io('http://localhost:4000');
 
@@ -56,6 +57,7 @@ function UserList() {
 
   return (
     <div className="user-list-container">
+      <APIcall/>
       {inRoom ? (
         <div className="in-room-box">
           <p>You are currently in a room.</p>

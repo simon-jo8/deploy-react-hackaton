@@ -6,10 +6,10 @@ const HealthBar = ({ maxHp = 100, hp = 100 } = {}) => {
     // setBarWidth((hpLeft / maxHp) * 100);
     return (
         <div>
-            <div class="health-bar">
-                <div class="hover-info">{hp * 10}/{maxHp * 10}</div>
-                <div class="bar" style={{ width: `${barWidth}%` }}></div>
-                <div class="hit" style={{ width: `${0}%` }}></div>
+            <div className="health-bar">
+                <div className="hover-info">{hp * 10}/{maxHp * 10}</div>
+                <div className="bar" style={{ width: `${barWidth}%` }}></div>
+                <div className="hit" style={{ width: `${0}%` }}></div>
             </div>
             <br />
         </div>
