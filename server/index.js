@@ -19,7 +19,7 @@ let connectedUsers = [];
 let activeRooms = [];
 
 socketIO.on('connection', (socket) => {
-    console.log(`⚡: ${socket.id} user just connected!`);
+    // console.log(`⚡: ${socket.id} user just connected!`);
     
     // Add the new user to the connected users list
     connectedUsers.push({ id: socket.id, name: "User " + socket.id });
@@ -30,7 +30,7 @@ socketIO.on('connection', (socket) => {
     socket.emit('current user', { id: socket.id, name: `User ${socket.id}` });
 
     socket.on('disconnect', () => {
-        console.log(`🔥: User ${socket.id} disconnected`);
+        // console.log(`🔥: User ${socket.id} disconnected`);
         
         // Remove the disconnected user from the connected users list
         connectedUsers = connectedUsers.filter((user) => user.id !== socket.id);
@@ -39,25 +39,37 @@ socketIO.on('connection', (socket) => {
         socketIO.emit('user disconnected', socket.id);
     });
 
+    socket.on('challenge', (opponentId, currentUser) => {
+        // Send a message to the challenged user
+        socket.to(opponentId).emit('challenged', currentUser);
+
+    })
+
+
     socket.on('challenge user', (opponentId) => {
         console.log(`User ${socket.id} challenged user ${opponentId}`);
-        
+
         // Create a new room with the two players
         const roomId = `${socket.id}-${opponentId}`;
         activeRooms.push(roomId);
-        
+
         // Send each player to the room
         socket.join(roomId);
-        socket.to(roomId).emit('join room', roomId);
+        // socket.to(roomId).emit('join room', roomId);
         socket.to(opponentId).emit('join room', roomId);
-        
+
         // Send a message to both players indicating the room they are in
         socket.emit('room created', roomId);
         socket.to(opponentId).emit('room created', roomId);
+
+
+
+
+        // socket.to(opponentId).emit('room created', roomId);
     });
 
     socket.on('leave room', (roomId) => {
-        console.log(`User ${socket.id} left room ${roomId}`);
+        // console.log(`User ${socket.id} left room ${roomId}`);
         
         // Remove the room from the active rooms list
         activeRooms = activeRooms.filter((room) => room !== roomId);
