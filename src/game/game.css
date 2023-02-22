@@ -1,0 +1,197 @@
+html{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+
+}
+
+.App{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.QuizzApp{
+    width: 100%;
+    height: 100%;
+}
+
+.QuizzApp h1{
+    text-align: center;
+    margin-top: 20px;
+}
+
+.mainFrame{
+    width: 100%;
+    height: 100%;
+    background-color: #ffffff;
+    display: flex;
+}
+
+.userCol{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 40px;
+    width: 20%;
+    height: 90%;
+}
+.user{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user img {
+    height: 120px;
+}
+
+.rightUser img {
+    transform: rotateY(180deg);
+}
+
+.mainGame{
+    width: 60%;
+    height: 100%;
+}
+
+/* ===============  Health Bar ============   */
+
+.health-bar {
+    margin-top: 20px;
+    width: 100px;
+    height: 10px;
+    background: black;
+    position: relative;
+}
+.bar {
+    background: #c54;
+    width: 100%;
+    height: 10px;
+    position: relative;
+    transition: width .5s linear;
+}
+
+.hit {
+    background: rgba(255,255,255,0.6);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0px;
+    transition: width .5s linear;
+}
+
+.hover-info{
+    position: absolute;
+    background: black;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: white;
+    top: -40px;
+    opacity: 0;
+    transition: 300ms;
+}
+.user:hover .hover-info{
+    opacity: 1;
+}
+
+/* ===============  Duel ============   */
+
+.duel-visuel{
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 40px;
+}
+.duel-visuel .background-image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    opacity: 0.5;
+}
+
+.duel-fighter {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.duel-fighter img{
+    height: 70%;
+    position: relative;
+}
+
+.reverse{
+    transform: rotateY(180deg);
+}
+
+.duel-button{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 200px;
+}
+
+.duel-button button {
+    width: 30%;
+    border: none;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+.duel-button button img {
+    width: 100px;
+    height: 100px;
+}
+
+/* ===============  Answers Lists ============   */
+
+.question-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer-section button{
+    width: 400px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: none;
+    border: 1px solid #F9E8BC;
+    background: #F9E8BC;
+    transition: 300ms;
+}
+
+.answer-section button:hover{
+    cursor: pointer;
+    border: 1px solid black;
+    background: #FFFFFF;
+    color: black;
+}
