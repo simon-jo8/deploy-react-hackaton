@@ -26,11 +26,11 @@
     "web-vitals": "^2.1.4"
   },
   "scripts": {
-    "start": "react-scripts start",
-    "build": "react-scripts build",
+    "start-client": "react-scripts start",
+    "build": "react-scripts build && (cd server && yarn install)",
     "test": "react-scripts test",
     "eject": "react-scripts eject",
-    "start:server": "nodemon server/index.js --ignore client"
+    "start": "cd server && yarn start"
   },
   "proxy": "http://localhost:3001",
   "eslintConfig": {
