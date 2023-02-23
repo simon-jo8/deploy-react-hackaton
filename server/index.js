@@ -30,7 +30,6 @@ socketIO.on('connection', (socket) => {
     socketIO.emit('user connected', connectedUsers);
 
     socket.emit('current user', { id: socket.id, name: `User ${socket.id}` });
-
     socket.on('disconnect', () => {
         // console.log(`🔥: User ${socket.id} disconnected`);
         

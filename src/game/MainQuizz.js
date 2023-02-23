@@ -18,7 +18,7 @@ import {SocketContext} from '../context/socket';
 
 
 function MainQuizz(props) {
-    const socket = useContext(SocketContext);
+    const socket = props.socket;
     const currentUser = props.currentUser;
     const opponent = props.opponent;
     const roomId = props.roomId;
@@ -152,7 +152,7 @@ function MainQuizz(props) {
 
 
     return (
-        <div className="QuizzApp">
+        <div className="QuizzApp app">
             <h1>Hogwarts Quizz</h1>
             {showFinalScore ? (
                 <div>

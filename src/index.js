@@ -10,6 +10,7 @@ import {
     RouterProvider,
 } from "react-router-dom";
 import MainQuizz from "./game/MainQuizz";
+import UserList from "./routes/UserList";
 
 const router = createBrowserRouter([
     {
@@ -21,8 +22,8 @@ const router = createBrowserRouter([
         element: <Login/>,
     },
     {
-        path: "game/:roomId",
-        element: <MainQuizz />,
+        path: "/game",
+        element: <UserList />,
     },
 ]);
 

@@ -24,7 +24,7 @@ export default function App(){
     }
 
     return(
-        <div className='app mt-5'>
+        <div className='app'>
             {isLoggedIn ? (
                 <UserList/>
             ) : (

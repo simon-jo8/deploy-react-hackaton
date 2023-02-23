@@ -3,13 +3,12 @@ import { io } from 'socket.io-client';
 import '../Home/UserList.css';
 import APIcall from '../API/api';
 import MainQuizz from "../game/MainQuizz";
-import {SocketContext} from '../context/socket';
+import { SocketContext, socket } from '../context/socket';
 
 
 
 
 function UserList() {
-  const socket = useContext(SocketContext);
   const [currentUser, setCurrentUser] = useState({});
   const [otherUsers, setOtherUsers] = useState([]);
   const [roomId, setRoomId] = useState('');

@@ -19,7 +19,6 @@ function Login() {
   async function handleLogin(event) {
     event.preventDefault();
     setError(null);
-
     try {
       /*const response = await fetch('https://hp-api-iim.azurewebsites.net/auth/log-in', {
         method: 'POST',
@@ -38,7 +37,8 @@ function Login() {
       }*/
 
       axios.post("https://hp-api-iim.azurewebsites.net/auth/log-in",{"name": username, "password": password})
-      .then((e)=> console.log(e))
+      .then((e)=> window.location ="/game"
+      )
       .catch((e)=> console.log(e))
     } catch (error) {
       console.error(error);
