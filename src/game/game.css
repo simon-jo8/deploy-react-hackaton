@@ -1,0 +1,275 @@
+html{
+    height: 100%;
+    width: 100%;
+    margin: 0;
+    padding: 0;
+}
+body{
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    width: 100%;
+
+}
+
+.app{
+    height: 100vh;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background: #EEC494;
+}
+.QuizzApp{
+    width: 100%;
+    height: 100%;
+}
+
+.QuizzApp h1{
+    text-align: center;
+    font-family: Wizzard;
+    font-weight: 600;
+    margin-top: 20px;
+    margin-bottom: 40px;
+    color: #503A22;
+}
+
+.mainFrame{
+    width: 100%;
+    display: flex;
+    background: #EEC494;
+
+}
+
+.userCol{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-end;
+    padding-bottom: 40px;
+    width: 20%;
+    height: 85vh;
+}
+.user{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.user p{
+    font-family: Wizzard;
+}
+
+.user img {
+    height: 120px;
+}
+
+.rightUser img {
+    transform: rotateY(180deg);
+}
+
+.mainGame{
+    width: 60%;
+    height: 100%;
+}
+
+/* ===============  Health Bar ============   */
+
+.health-bar {
+    margin-top: 20px;
+    width: 100px;
+    height: 10px;
+    background: black;
+    position: relative;
+}
+.bar {
+    background: #c54;
+    width: 100%;
+    height: 10px;
+    position: relative;
+    transition: width .5s linear;
+}
+
+.hit {
+    background: rgba(255,255,255,0.6);
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    width: 0px;
+    transition: width .5s linear;
+}
+
+.hover-info{
+    position: absolute;
+    background: black;
+    padding: 5px 15px;
+    border-radius: 5px;
+    color: white;
+    top: -40px;
+    opacity: 0;
+    transition: 300ms;
+}
+.user:hover .hover-info{
+    opacity: 1;
+}
+
+/* ===============  Duel ============   */
+
+.duel-visuel{
+    width: 100%;
+    height: 300px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    margin-bottom: 40px;
+}
+.duel-visuel .background-image{
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    position: absolute;
+    opacity: 0.5;
+}
+
+.duel-fighter {
+    height: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.duel-fighter img{
+    height: 70%;
+    position: relative;
+}
+
+.reverse{
+    transform: rotateY(180deg);
+}
+
+.duel-button{
+    display: flex;
+    justify-content: space-between;
+    width: 100%;
+    height: 200px;
+}
+
+.duel-button button {
+    width: 200px;
+    height: 200px;
+    border: none;
+    display: flex;
+    background: url("../assets/cadre.svg") no-repeat top left;
+    flex-direction: column;
+    font-family: Wizzard;
+    color: #eeeeee;
+    align-items: center;
+    justify-content: center;
+}
+.duel-button button:hover {
+    opacity: 0.8;
+}
+.duel-button button img {
+    width: 100px;
+    height: 100px;
+}
+
+/* ===============  Answers Lists ============   */
+
+.question-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+}
+.question-section h2{
+    font-family: Wizzard;
+    color: #503A22;
+
+}
+
+.question-section .question{
+    font-family: Wizzard;
+    color: #503A22;
+}
+
+.answer-section{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.answer-section button{
+    width: 300px;
+    height: 70px;
+    margin-bottom: 20px;
+    padding: 20px;
+    border: none;
+    font-family: Wizzard;
+    letter-spacing: 2px;
+    font-weight: 400;
+    color: white;
+    /*text-transform: uppercase;*/
+    background:url('../assets/button.svg') no-repeat top left;
+    background-size: 100%;
+    transition: 300ms;
+    position: relative;
+}
+
+.answer-section button:hover{
+    cursor: pointer;
+    opacity: 0.8;
+}
+
+/* ===============  List Users ============   */
+
+.popup{
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 100;
+}
+.popup-content {
+    border-radius: 5px;
+    width: 400px;
+    height: 400px;
+    background: #EEC494;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-evenly;
+    position: relative;
+}
+
+.popup-content button{
+    width: 160px;
+    height: auto;
+    padding: 8px;
+    border: none;
+    font-family: Wizzard;
+    letter-spacing: 2px;
+    font-weight: 400;
+    color: white;
+    /*text-transform: uppercase;*/
+    background:url('../assets/button.svg') no-repeat top left;
+    background-size: 100%;
+    transition: 300ms;
+    position: relative;
+}
+
+.popup-content p{
+    font-family: Wizzard;
+}
