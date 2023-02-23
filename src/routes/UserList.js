@@ -63,7 +63,7 @@ function UserList() {
   return (
         showGame ? (<MainQuizz currentUser={currentUser.id} opponent={opponent.id} roomId={roomId} socket={socket}/>
             )
-            : (<div className="user-list-container">
+            : (<div className="app"><div className="user-list-container">
               {inRoom ? (
                   <div className="in-room-box">
                     <p>You are currently in a room.</p>
@@ -93,15 +93,20 @@ function UserList() {
               </div>
               {challengedPopup
                   ? (<div className="popup">
-                    <p>Vous avez été défier</p>
-                    <button onClick={() => {
-                      socket.emit('challenge user', opponent.id);
-                      setChallengedPopup(false);
-                    }}>Accepter</button>
+                    <div className="popup-content">
+                      <p>Vous avez été défier</p>
+                      <button onClick={() => {
+                        socket.emit('challenge user', opponent.id);
+                        setChallengedPopup(false);
+                      }}>Accepter</button>
+                      <button onClick={() => {
+                        setChallengedPopup(false);
+                      }}>Refuser</button>
+                    </div>
                   </div>)
                   : null
               }
-            </div>)
+            </div></div>)
   );
 }
 
